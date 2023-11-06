@@ -13,7 +13,7 @@ index=1
 IFS=$'\n'  # Set Internal Field Separator to newline for the loop
 for line in $output; do
     if [[ $line == *"NAME"* ]]; then
-        printf "%-3s %s\n" "" "$line"
+        printf "%-3s %s\n" "" "$line" 
     else
         printf "%-3d %s\n" $index "$line"
         ((index++))

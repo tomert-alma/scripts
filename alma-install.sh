@@ -96,6 +96,7 @@ add_klogs_aliases() {
     [topic-logs]='/usr/local/bin/klogs topic-processor'
     [trace-agg-logs]='/usr/local/bin/klogs trace-aggregator'
     [trace-logs]='/usr/local/bin/klogs trace-processor'
+    [otlp-logs]='/usr/local/bin/klogs otlp-processor'
   )
 
   # Add each alias
@@ -104,6 +105,7 @@ add_klogs_aliases() {
   done
 }
 install() {
+  ZSHRC_FILE="$HOME/.zshrc"
   cp "$ZSHRC_FILE" "${ZSHRC_FILE}.backup"
 
   if ! grep -q "######## Alma Scripts Start" ~/.zshrc; then
@@ -116,14 +118,13 @@ install() {
       echo "export PATH=\"\$PATH:$(pwd)\"" >> ~/.zshrc
   fi
   
-  # Prompt user for the absolute path of the infra repository
-  read "infra_abs_path?Please enter your infra repo absolute path (for example /Users/tomertwig/Alma/infra): "
-  
-  # Remove any trailing slashes to avoid double slashes in paths
-  infra_abs_path="${infra_abs_path%/}"
-
   # Check if INFRA_PATH is already set and add it if not
   if ! grep -q "export INFRA_PATH=" ~/.zshrc; then
+  # Prompt user for the absolute path of the infra repository
+    read "infra_abs_path?Please enter your infra repo absolute path (for example /Users/tomertwig/Alma/infra): "
+  
+    # Remove any trailing slashes to avoid double slashes in paths
+    infra_abs_path="${infra_abs_path%/}"
     # Write the INFRA_PATH variable to .zshrc without backslashes or quotes
     echo "export INFRA_PATH="${infra_abs_path}"" >> ~/.zshrc
   fi
@@ -140,7 +141,7 @@ install() {
     echo "\n############### Alma Scripts End ###############\n" >> ~/.zshrc
   fi
 
-  echo "Please run 'source ~/.zshrc' to apply the changes."
+  echo "\n############ Please run 'source ~/.zshrc' to apply the changes ############"
 }
 
 # Call the install function

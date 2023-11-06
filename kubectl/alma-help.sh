@@ -25,6 +25,7 @@ alias_descriptions=(
   topic-logs "logs for topic-processor"
   trace-logs "logs for trace-processor"
   trace-agg-logs "logs for trace-aggregator"
+  otlp-logs-logs "logs for otlp-processor"
 )
 
 # Print the alias names and their descriptions in a formatted manner

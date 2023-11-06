@@ -104,7 +104,8 @@ add_klogs_aliases() {
   done
 }
 install() {
- 
+  cp "$ZSHRC_FILE" "${ZSHRC_FILE}.backup"
+
   if ! grep -q "######## Alma Scripts Start" ~/.zshrc; then
       # Add a header for Alma scripts
       echo "\n############### Alma Scripts Start ###############" >> ~/.zshrc

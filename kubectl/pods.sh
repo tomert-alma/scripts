@@ -8,15 +8,8 @@ else
     output=$(kubectl get pods -n $ns)
 fi
 
-# Print each line with an index only if "Name" is a substring of the line
-index=1
+# Print each line without leading spaces
 IFS=$'\n'  # Set Internal Field Separator to newline for the loop
 for line in $output; do
-    if [[ $line == *"NAME"* ]]; then
-        printf "%-3s %s\n" "" "$line" 
-    else
-        printf "%-3d %s\n" $index "$line"
-        ((index++))
-    fi
-
+    printf "%s\n" "$line"
 done

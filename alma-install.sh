@@ -97,6 +97,9 @@ add_klogs_aliases() {
     [trace-agg-logs]='/usr/local/bin/klogs trace-aggregator'
     [trace-logs]='/usr/local/bin/klogs trace-processor'
     [otlp-logs]='/usr/local/bin/klogs otlp-processor'
+    [api-logs]='/usr/local/bin/klogs api-backend'
+    [tests-logs]='/usr/local/bin/klogs integration-tests-job'
+    [usecase-logs]='/usr/local/bin/klogs use-case-controller'
   )
 
   # Add each alias

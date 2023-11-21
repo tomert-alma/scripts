@@ -19,14 +19,15 @@ check_job_status() {
     fi
 }
 
+numberOfTimesToRun=${1:-10}
+echo $numberOfTimesToRun
 
-# Run the job 100 times
-for i in {1..100}; do
+for (( i=1; i<=numberOfTimesToRun; i++ )); do
     echo "Running job iteration $i"
-    kubectl delete -f docker/integration-tests.yaml && kubectl apply -f docker/integration-tests.yaml
+    kubectl delete -f /Users/tomertwig/Alma/integration-tests/docker/integration-tests.yaml && kubectl apply -f /Users/tomertwig/Alma/integration-tests/docker/integration-tests.yaml
 
     # Wait for the job to complete
-    kubectl wait --for=condition=complete job/integration-tests-job -n alma --timeout=3m
+    kubectl wait --for=condition=complete job/integration-tests-job -n alma --timeout=8m
 
     # Check if the job failed
     check_job_status

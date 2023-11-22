@@ -90,16 +90,16 @@ add_klogs_aliases() {
   # Define the aliases as an associative array
   declare -A aliases
   aliases=(
-    [otlpgw-logs]='/usr/local/bin/klogs gw-otlp'
-    [ddgw-logs]='/usr/local/bin/klogs gw-datadog'
-    [query-logs]='/usr/local/bin/klogs query-processor'
-    [topic-logs]='/usr/local/bin/klogs topic-processor'
-    [trace-agg-logs]='/usr/local/bin/klogs trace-aggregator'
-    [trace-logs]='/usr/local/bin/klogs trace-processor'
-    [otlp-logs]='/usr/local/bin/klogs otlp-processor'
-    [api-logs]='/usr/local/bin/klogs api-backend'
-    [tests-logs]='/usr/local/bin/klogs integration-tests-job'
-    [usecase-logs]='/usr/local/bin/klogs use-case-controller'
+    [otlpgw-logs]='/usr/local/bin/klogs -name=gw-otlp'
+    [ddgw-logs]='/usr/local/bin/klogs -name=gw-datadog'
+    [query-logs]='/usr/local/bin/klogs -name=query-processor'
+    [topic-logs]='/usr/local/bin/klogs -name=topic-processor'
+    [trace-agg-logs]='/usr/local/bin/klogs -name=trace-aggregator'
+    [trace-logs]='/usr/local/bin/klogs -name=trace-processor'
+    [otlp-logs]='/usr/local/bin/klogs -name=otlp-processor'
+    [api-logs]='/usr/local/bin/klogs -name=api-backend'
+    [tests-logs]='/usr/local/bin/klogs -name=integration-tests-job'
+    [usecase-logs]='/usr/local/bin/klogs -name=use-case-controller'
   )
 
   # Add each alias

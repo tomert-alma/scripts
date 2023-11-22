@@ -1,13 +1,25 @@
 #!/bin/bash
 
-numberOfArgs=$#
+timestampsFlag=false  # Initialize the timestamps flag
+pod_nick=""           # Initialize pod_nick variable
 
-if [ $# -eq 1 ]; then
-    pod_nick=$1
-elif [ $# -eq 2 ]; then
-    ns=$1
-    pod_nick=$2
-fi
+# Parse command line arguments
+while [ $# -gt 0 ]; do
+  case $1 in
+    -t)
+      timestampsFlag=true
+      shift # Remove -t from processing
+      ;;
+    -name=*)
+      pod_nick="${1#*=}"  # Extract the value right of '='
+      shift # Remove -name=value from processing
+      ;;
+    *)
+      echo "Invalid argument: $1"
+      exit 1
+      ;;
+  esac
+done
 
 pod_index=-1  # Initialize with an invalid value
 # Check if string is an integer
@@ -15,11 +27,9 @@ if [[ $pod_nick =~ ^-?[0-9]+$ ]]; then
     pod_index=$pod_nick
 fi
 
-if [ -z "$ns" ]; then
-    pods=$(kubectl get pods -A -o jsonpath='{range .items[*]}{.metadata.namespace}/{.metadata.name}{"\n"}{end}')
-else
-    pods=$(kubectl get pods -n $ns -o jsonpath='{range .items[*]}{.metadata.namespace}/{.metadata.name}{"\n"}{end}')
-fi
+# Fetch pods from all namespaces
+pods=$(kubectl get pods -A -o jsonpath='{range .items[*]}{.metadata.namespace}/{.metadata.name}{"\n"}{end}')
+
 # Fetch all pods
 IFS=$'\n'  # Set Internal Field Separator to newline for the loop
 index=1
@@ -28,13 +38,20 @@ for pod_info in $pods; do
     pod_ns="${ADDR[0]}"
     pod_name="${ADDR[1]}"
     if [[ $index -eq $pod_index ]]; then
-        echo "kubectl logs $pod_name -n $pod_ns"
-        kubectl logs $pod_name -n $pod_ns | less
-        break
+        logCmd="kubectl logs $pod_name -n $pod_ns"
     elif [[ $pod_name == *$pod_nick* ]]; then
-        echo "kubectl logs $pod_name -n $pod_ns"
-        kubectl logs $pod_name -n $pod_ns | less
-        break 
+        logCmd="kubectl logs $pod_name -n $pod_ns"
+    else
+        ((index++))
+        continue
     fi
-    ((index++))
+
+    # Add --timestamps if flag is set
+    if [ "$timestampsFlag" = true ]; then
+        logCmd+=" --timestamps"
+    fi
+
+    echo $logCmd
+    eval $logCmd | less
+    break
 done
